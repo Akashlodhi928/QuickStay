@@ -16,7 +16,7 @@ const port = process.env.PORT || 3000
 connectDb()
 app.use(express.json());
 app.use(cors({
-    origin:"https://quickstay-xbt1.onrender.com",
+    origin:"https://quickstay-frontend.onrender.com",
     credentials:true
 }))
 app.use(cookieParser())
