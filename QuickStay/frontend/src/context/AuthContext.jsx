@@ -1,22 +1,27 @@
-import React, { Children, createContext, useState } from 'react'
+import React, { createContext, useEffect, useState } from "react";
+import axios from "axios";
 
-export const authDataContext = createContext()
+export const authDataContext = createContext();
 
-function AuthCotext({children}) {
-    let serverUrl = "https://quickstay-1-aa87.onrender.com"
-    let [loading, setLoading] = useState(false)
+function AuthCotext({ children }) {
+  let serverUrl = "https://quickstay-1-aa87.onrender.com";
+  let [loading, setLoading] = useState(false);
 
-   let value={
-        serverUrl,
-        loading, setLoading
-    }
+  useEffect(() => {
+    axios.defaults.withCredentials = true;
+  }, []);
+
+  let value = {
+    serverUrl,
+    loading,
+    setLoading,
+  };
+
   return (
-    <div>
-        <authDataContext.Provider value={value}>
-            {children}
-        </authDataContext.Provider>
-    </div>
-  )
+    <authDataContext.Provider value={value}>
+      {children}
+    </authDataContext.Provider>
+  );
 }
 
-export default AuthCotext
+export default AuthCotext;

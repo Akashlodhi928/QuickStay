@@ -1,38 +1,48 @@
 import express from "express";
-const app = express()
-import dotenv from "dotenv"
-dotenv.config()
-import cors from "cors"
-import authRouter from "./routes/auth.routes.js";
+import dotenv from "dotenv";
+dotenv.config();
+
+import cors from "cors";
 import cookieParser from "cookie-parser";
+import authRouter from "./routes/auth.routes.js";
 import userRouter from "./routes/user.route.js";
 import listingRouter from "./routes/listing.route.js";
 import bookingRouter from "./routes/booking.route.js";
 import connectDb from "./config/db.js";
 
-const port = process.env.PORT || 3000
+const app = express();
+const port = process.env.PORT || 3000;
 
+connectDb();
 
-connectDb()
-app.use(express.json());
+app.set("trust proxy", 1);
+
 const allowedOrigins = [
-    "https://quickstay-2-uyri.onrender.com",
-    "http://localhost:5173"
-]
+  "https://quickstay-2-uyri.onrender.com",
+  "http://localhost:5173",
+];
 
-app.use(cors({
-    origin: allowedOrigins,
-    credentials: true
-}))
-app.use(cookieParser())
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
-app.use("/api/auth", authRouter)
-app.use("/api/user", userRouter)
-app.use("/api/listing", listingRouter)
-app.use("/api/booking", bookingRouter)
+app.use(express.json());
+app.use(cookieParser());
 
-app.listen(port,()=>{
-    
-    console.log(`server is runing is ${port} port`)
-})
+app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
+app.use("/api/listing", listingRouter);
+app.use("/api/booking", bookingRouter);
 
+app.listen(port, () => {
+  console.log(`server is running on ${port} port`);
+});
