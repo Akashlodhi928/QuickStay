@@ -3,7 +3,7 @@ import React, { Children, createContext, useState } from 'react'
 export const authDataContext = createContext()
 
 function AuthCotext({children}) {
-    let serverUrl = "http://localhost:8000"
+    let serverUrl = "https://quickstay-1-aa87.onrender.com"
     let [loading, setLoading] = useState(false)
 
    let value={
