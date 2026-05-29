@@ -15,9 +15,14 @@ const port = process.env.PORT || 3000
 
 connectDb()
 app.use(express.json());
+const allowedOrigins = [
+    "https://quickstay-2-uyri.onrender.com",
+    "http://localhost:5173"
+]
+
 app.use(cors({
-    origin:["https://quickstay-2-uyri.onrender.com","http://localhost:5173"],
-    credentials:true
+    origin: allowedOrigins,
+    credentials: true
 }))
 app.use(cookieParser())
 

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import React, { useContext, useEffect, useState } from 'react'
 import { FaArrowLeftLong, FaStar } from 'react-icons/fa6'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ImCross } from "react-icons/im";
 import axios from 'axios'
 import { toast } from 'react-toastify'
@@ -12,8 +12,9 @@ import { bookingDataConetext } from '../context/BookingContext';
 import { userDataCotext } from '../context/UserContext';
 
 function ViewCrad() {
-  const navigate = useNavigate()
-  const { cardDetails, updating, setUpdating, deleteing, setDeleteing } = useContext(listingDataContext)
+const navigate = useNavigate()
+const { id } = useParams()
+const { cardDetails, setCardDetails, updating, setUpdating, deleteing, setDeleteing } = useContext(listingDataContext)
   const { userData } = useContext(userDataCotext)
   const [updatePopUp, setUpdatePopUp] = useState(false)
   const [bookingPopUp, setBookingPopUp] = useState(false)
@@ -26,9 +27,32 @@ function ViewCrad() {
   const [city, setCity] = useState(cardDetails?.city || "")
   const [landMark, setLandMark] = useState(cardDetails?.landMark || "")
   const { serverUrl } = useContext(authDataContext)
+
+
   const [minDate] = useState(() => new Date().toISOString().split('T')[0])
   const [airbnbCharge, setAirbnbCharge] = useState(0);
   const [tax, setTax] = useState(0);
+
+  useEffect(() => {
+  const fetchListing = async () => {
+    if (!id) return
+
+    if (cardDetails?._id === id) return
+
+    try {
+      const result = await axios.get(`${serverUrl}/api/listing/findlistingbyid/${id}`, {
+        withCredentials: true,
+      })
+      setCardDetails(result.data)
+    } catch (error) {
+      console.log(error)
+      toast.error("Unable to load listing")
+      navigate("/")
+    }
+  }
+
+  fetchListing()
+}, [id, cardDetails?._id, serverUrl, setCardDetails, navigate])
 
   const {
     checkIn, checkOut,

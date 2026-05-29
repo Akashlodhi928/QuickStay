@@ -26,7 +26,7 @@ function Card({ title, landMark, image1, image2, image3, rent, city, id, ratings
   return (
     <article
       className="group animate-rise relative flex min-h-[430px] w-full cursor-pointer flex-col overflow-hidden rounded-[2rem] border border-white/70 bg-white shadow-[0_18px_60px_rgba(22,32,28,0.10)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_26px_80px_rgba(22,32,28,0.16)] sm:max-w-[360px]"
-      onClick={() => !isBooked ? handleClick() : null}
+    onClick={handleClick}
     >
       <div className="relative h-[275px] overflow-hidden bg-stone-100">
         <div className="hide-scrollbar flex h-full w-full overflow-x-auto scroll-smooth">

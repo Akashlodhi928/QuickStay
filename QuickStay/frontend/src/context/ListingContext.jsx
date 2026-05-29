@@ -107,7 +107,7 @@ function ListingContext({ children }) {
     try {
         let result = await axios.get(serverUrl + `/api/listing/findlistingbyid/${id}`,{withCredentials:true})
         setCardDetails(result.data)
-        navigate("/viewcard")
+        navigate(`/viewcard/${id}`)
         console.log(result.data)
     } catch (error) {
       console.log(error)

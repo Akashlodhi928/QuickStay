@@ -14,7 +14,15 @@ import MyBookings from './pages/MyBooking';
 import Booked from './pages/Booked';
 
 function App() {
-  let {userData} = useContext(userDataCotext)
+ let { userData, authLoading } = useContext(userDataCotext)
+
+if (authLoading) {
+  return (
+    <div className="min-h-screen flex items-center justify-center font-bold">
+      Loading...
+    </div>
+  )
+}
   return (
     <>
 
@@ -28,7 +36,7 @@ function App() {
         <Route path='/listingpage2'  element={userData != null? <ListingPage2/>:<Navigate to={"/"}/>} />
         <Route path='/listingpage3'  element={userData != null? <ListingPage3/>:<Navigate to={"/"}/>}/>
         <Route path='/mylisting'  element={userData != null? <MyListing/>:<Navigate to={"/login"}/>}/>
-        <Route path='/viewcard'  element={userData != null? <ViewCrad/>:<Navigate to={"/"}/>}/>
+        <Route path='/viewcard/:id' element={userData != null ? <ViewCrad /> : <Navigate to={"/"} />} />
         <Route path='/mybooking'  element={userData != null? <MyBookings/>:<Navigate to={"/login"}/>}/>
          <Route path='/booked'  element={userData != null? <Booked/>:<Navigate to={"/"}/>}/>
       </Routes>

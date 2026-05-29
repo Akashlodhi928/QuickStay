@@ -10,19 +10,22 @@ export const userDataCotext = createContext()
 function UserContext({children}) {
 
     let {serverUrl} = useContext(authDataContext)
-    const [userData,setUserData] = useState(null)
+  const [userData, setUserData] = useState(null)
+const [authLoading, setAuthLoading] = useState(true)
 
 
-    const getCurrentUser = async ()=>{
-        try {
-            let result = await axios.get(`${serverUrl}/api/user/currentuser`, {withCredentials:true})
-            setUserData(result.data)
-            console.log(result.data)
-        } catch (error) {
-            setUserData(null)
-            console.log(error)
-        }
+
+  const getCurrentUser = async () => {
+    try {
+        let result = await axios.get(`${serverUrl}/api/user/currentuser`, { withCredentials: true })
+        setUserData(result.data)
+    } catch (error) {
+        setUserData(null)
+        console.log(error)
+    } finally {
+        setAuthLoading(false)
     }
+}
 
      useEffect(() => {
     
@@ -31,11 +34,12 @@ function UserContext({children}) {
   }, []);
 
 
-     let value= {
-        userData,
-        setUserData,
-        getCurrentUser
-     }
+  let value = {
+    userData,
+    setUserData,
+    getCurrentUser,
+    authLoading
+}
   return (
 
     <div>
